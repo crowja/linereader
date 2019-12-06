@@ -1,6 +1,6 @@
 /**
  *  @file linereader.c
- *  @version 0.0.0
+ *  @version 0.0.1-dev0
  *  @date Fri Dec  6 09:54:07 CST 2019
  *  @copyright %COPYRIGHT%
  *  @brief FIXME
@@ -75,7 +75,7 @@ linereader_free(struct linereader *p)
 const char *
 linereader_version(void)
 {
-   return "0.0.0";
+   return "0.0.1-dev0";
 }
 
 
