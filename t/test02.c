@@ -3,7 +3,7 @@
 #include "linereader.h"
 
 int
-main(int argc, char *argv[])
+main(void)
 {
    struct linereader *z = linereader_new();
    const char *cp;
@@ -25,7 +25,7 @@ main(int argc, char *argv[])
          printf("->%s", cp);
    }
 
-   linereader_free(z);
+   linereader_free(&z);
 
    return 0;
 }

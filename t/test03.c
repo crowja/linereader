@@ -21,7 +21,7 @@ _chomp(char *str)
 
 
 int
-main(int argc, char *argv[])
+main(void)
 {
    struct linereader *z = linereader_new();
    const char *cp;
@@ -42,7 +42,7 @@ main(int argc, char *argv[])
       printf("->%s<-\n", cp);
    }
 
-   linereader_free(z);
+   linereader_free(&z);
    free(fake);
 
    return 0;

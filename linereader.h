@@ -26,7 +26,7 @@ struct linereader *linereader_new(void);
  *  @details FIXME longer description here ...
  */
 
-void        linereader_free(struct linereader *p);
+void        linereader_free(struct linereader **pp);
 
 /**
  *

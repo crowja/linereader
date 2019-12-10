@@ -34,9 +34,6 @@ struct linereader {
    struct varstr *text;
 };
 
-
-/*** linereader_new() ***/
-
 struct linereader *
 linereader_new(void)
 {
@@ -52,34 +49,26 @@ linereader_new(void)
    return tp;
 }
 
-
-/*** linereader_free() ***/
-
 void
-linereader_free(struct linereader *p)
+linereader_free(struct linereader **pp)
 {
-   if (_IS_NULL(p))
+   if (_IS_NULL(*pp))
       return;
 
-   varstr_free(p->text);
+   varstr_free(&(*pp)->text);
 
-   if (p->in != stdin && !_IS_NULL(p->in))
-      fclose(p->in);
+   if ((*pp)->in != stdin && !_IS_NULL((*pp)->in))
+      fclose((*pp)->in);
 
-   _FREE(p);
+   _FREE(*pp);
+   *pp = NULL;
 }
-
-
-/*** linereader_version() ***/
 
 const char *
 linereader_version(void)
 {
    return "0.0.1-dev0";
 }
-
-
-/*** linereader_init() ***/
 
 int
 linereader_init(struct linereader *p, char *fname)
@@ -94,8 +83,6 @@ linereader_init(struct linereader *p, char *fname)
 
    return 0;
 }
-
-/*** linereader_next() ***/
 
 const char *
 linereader_next(struct linereader *p)
