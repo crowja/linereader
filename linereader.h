@@ -1,6 +1,6 @@
 /**
  *  @file linereader.h
- *  @version 0.0.1-dev0
+ *  @version 0.1.0-dev0
  *  @date Fri Dec  6 09:54:07 CST 2019
  *  @copyright %COPYRIGHT%
  *  @brief FIXME
