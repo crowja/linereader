@@ -55,8 +55,8 @@ indent: stamp
 	done 
 
 stamp:
-	@bash stamper.bash linereader.c
-	@bash stamper.bash linereader.h
+	@stamper.bash linereader.c
+	@stamper.bash linereader.h
 
 clean:
 	@/bin/rm -f linereader.o *.o *~ *.BAK *.bak core.* a.out
