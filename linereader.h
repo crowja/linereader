@@ -2,9 +2,8 @@
  *  @file linereader.h
  *  @version 0.1.0-dev0
  *  @date Fri Dec  6 09:54:07 CST 2019
- *  @copyright %COPYRIGHT%
- *  @brief FIXME
- *  @details FIXME
+ *  @copyright 2020 John A. Crow <crowja@gmail.com>
+ *  @license Unlicense <http://unlicense.org/>
  */
 
 #ifndef _LINEREADER_H_
