@@ -9,7 +9,7 @@ C-scrap for reading a file line by line. If built with Zlib support
 #include "linereader.h"
 . . .
 
-/* Data is from stdin */
+/* NULL to get data from stdin */
 struct linereader *z = linereader_new(NULL);
 char *line;
       
