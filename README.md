@@ -5,13 +5,16 @@ C scrap for reading a file line by line.
 
 ```c
 #include "linereader.h"
-/* Data from stdin */
+. . .
+
+/* Data is from stdin */
 struct linereader *z = linereader_new(NULL);
 char *line;
       
-while ((line = linereader_next(z)))
+while ((line = linereader_next(z))) {
    printf("%s", line);
    . . .
+}
 
 linereader_free(&z);
 ```
