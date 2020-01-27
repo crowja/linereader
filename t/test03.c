@@ -23,7 +23,7 @@ _chomp(char *str)
 int
 main(void)
 {
-   struct linereader *z = linereader_new();
+   struct linereader *z = linereader_new(NULL);
    const char *cp;
    char       *fake = NULL;
 

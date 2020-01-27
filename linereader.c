@@ -1,15 +1,30 @@
 /**
  *  @file linereader.c
  *  @version 0.2.0-dev0
- *  @date Fri Dec  6 09:54:07 CST 2019
+ *  @date Sun Jan 26 19:28:47 CST 2020
  *  @copyright 2020 John A. Crow <crowja@gmail.com>
  *  @license Unlicense <http://unlicense.org/>
  */
+
+/* Needed because fileno() seems to be POSIX C but not ANSI C */
+#define _POSIX_SOURCE
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "varstr.h"
+#ifdef   HAVE_ZLIB
+#include "zlib.h"
+#else
+/* Zlib is not available, define macros mimicking some of the gz* funcs */
+typedef FILE *gzFile;
+#define  gzdopen(a, b)    fdopen((a), (b))
+#define  gzopen(a, b)     fopen((a), (b))
+#define  gzclose(a)       fclose((a))
+#define  gzgetc(a)        getc((a))
+#define  gzgets(a, b, c)  fgets((b), (c), (a))
+/* a=file, b=buf, c=len */
+#endif
 #include "linereader.h"
 
 #ifdef  _IS_NULL
@@ -28,22 +43,70 @@
 #define _BUFSIZE      1024                       /* _BUFSIZE > 1 */
 
 struct linereader {
-   FILE       *in;
+   gzFile      in;
    char        buf[_BUFSIZE];
    struct varstr *text;
+   /**
+    *  Flag if test for compressed input has been completed. The first chunk of
+    *  input is examined and an error is reported if it looks to be compressed
+    *  and Zlib support is not available.
+    */
+   int         checked;
+   int         at_start;
 };
 
 struct linereader *
-linereader_new(void)
+linereader_new(char *fname)
 {
    struct linereader *tp;
+   char       *tmp;
+   unsigned char bytes[3];
 
    tp = (struct linereader *) malloc(sizeof(struct linereader));
    if (_IS_NULL(tp))
       return NULL;
 
-   tp->in = stdin;                               /* default */
+   if (_IS_NULL(fname))
+      tp->in = gzdopen(fileno(stdin), "r");
+   else
+      tp->in = gzopen(fname, "r");
+   if (_IS_NULL(tp->in))
+      return NULL;
+
+#ifdef  HAVE_ZLIB
+   gzbuffer(tp->in, 1024 * 32);
+#endif
+
    tp->text = varstr_new();
+
+   /**
+    *  Peek at the first two bytes. If the data stream is Zlib compressed its
+    *  first two bytes will be 0x1f and 0x8b. If HAVE_ZLIB, these will be
+    *  interpreted by gzgets and handled appropriately and won't show up. This
+    *  is simply checking to see if the input stream is compressed but that
+    *  linereader was compiled without Zlib support.
+    */
+
+   tmp = gzgets(tp->in, (char *) bytes, 3);      /* try reading two bytes */
+
+   if (_IS_NULL(tmp)) {                          /* eof */
+      /* that's okay, pass */
+   }
+   else if (strlen(tmp) < 2) {                   /* read one byte at most */
+      /* that's okay, append bytes to tp->text */
+      varstr_cat(tp->text, (char *) bytes);
+   }
+   else if (bytes[0] != 0x1f || bytes[1] != 0x8b) {     /* not Zlib data */
+      /* that's okay, append bytes to tp->text */
+      varstr_cat(tp->text, (char *) bytes);
+   }
+   else {                                        /* compressed data, probably missing Zlib support */
+      /* clean up and return NULL */
+      linereader_free(&tp);
+      return NULL;
+   }
+
+   tp->at_start = 1;
 
    return tp;
 }
@@ -56,8 +119,8 @@ linereader_free(struct linereader **pp)
 
    varstr_free(&(*pp)->text);
 
-   if ((*pp)->in != stdin && !_IS_NULL((*pp)->in))
-      fclose((*pp)->in);
+   if (!_IS_NULL((*pp)->in))
+      gzclose((*pp)->in);
 
    _FREE(*pp);
    *pp = NULL;
@@ -69,32 +132,21 @@ linereader_version(void)
    return "0.2.0-dev0";
 }
 
-int
-linereader_init(struct linereader *p, char *fname)
-{
-
-   if (p->in != stdin)
-      fclose(p->in);
-
-   p->in = fopen(fname, "r");
-   if (_IS_NULL(p->in))
-      return 1;
-
-   return 0;
-}
-
 const char *
 linereader_next(struct linereader *p)
 {
-   varstr_empty(p->text);
+   /* Skip empty on first call since p->text will have 1-3 bytes set by constructor */
+   if (p->at_start)
+      p->at_start = 0;
+   else
+      varstr_empty(p->text);
 
    for (;;) {                                    /* loop to consume a single line */
 
-      if (NULL == fgets(p->buf, _BUFSIZE, p->in)) {
+      if (NULL == gzgets(p->in, p->buf, _BUFSIZE)) {
 
          if (strlen(varstr_str(p->text)) == 0)   /* eof and no text accumulated -- done! */
             return NULL;
-
          else
             break;
       }
