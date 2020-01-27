@@ -1,7 +1,9 @@
 # linereader 1.0.0-dev0.
-C scrap for reading a file line by line.
+123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789
+C-scrap for reading a file line by line. If built with Zlib support
+(-DHAVE\_ZLIB) the input file/stream can be Zlib compressed, e.g. gzipped files.
 
-## Snippet
+## Here's how you use it
 
 ```c
 #include "linereader.h"
@@ -20,3 +22,6 @@ linereader_free(&z);
 ```
 
 ## What you need
+
+* linereader.c and linereader.h.
+* [varstr.c and varstr.h from](https://github.com/crowja/varstr).
