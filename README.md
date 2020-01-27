@@ -23,5 +23,7 @@ linereader_free(&z);
 
 ## What you need
 
+All you need is:
+
 * linereader.c and linereader.h.
 * [varstr.c and varstr.h from](https://github.com/crowja/varstr).
