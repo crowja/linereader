@@ -12,6 +12,7 @@ INDENT_FLAGS =
 .PHONY: check vcheck scheck indent stamp clean
 
 TESTS = t/test01 t/test02 t/test03
+EXAMPLES = ex/ex01
 
 linereader.o: linereader.c linereader.h
 	$(CC) -c $(CPPFLAGS) $(OTHER_INCLUDE) $(CFLAGS) -o $@ linereader.c
