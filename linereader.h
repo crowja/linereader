@@ -1,6 +1,6 @@
 /**
  *  @file linereader.h
- *  @version 1.1.0-dev0
+ *  @version 1.1.1-dev0
  *  @see https://github.com/crowja/linereader
  *  @date Sun Jan 26 19:28:47 CST 2020
  *  @copyright 2020 John A. Crow <crowja@gmail.com>
