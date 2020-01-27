@@ -8,19 +8,23 @@ e.g. gzipped files.
 ## Here's how you use it
 
 ```c
+#include <stdlib.h>
+#include <stdio.h>
 #include "linereader.h"
-. . .
 
-/* NULL to get data from stdin */
-struct linereader *z = linereader_new(NULL);
-char *line;
-      
-while ((line = linereader_next(z))) {
-   printf("%s", line);
-   . . .
+int main(void)
+{
+   /* NULL specifies stdin */
+   struct linereader *z = linereader_new(NULL);
+   char *line;
+
+   while ((line = (char *) linereader_next(z)))
+      printf("%s", line);
+
+   linereader_free(&z);
+
+   return 0;
 }
-
-linereader_free(&z);
 ```
 
 ## What you need
