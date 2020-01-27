@@ -1,6 +1,6 @@
 /**
  *  @file linereader.c
- *  @version 0.2.0-dev0
+ *  @version 1.0.0-dev0
  *  @date Sun Jan 26 19:28:47 CST 2020
  *  @copyright 2020 John A. Crow <crowja@gmail.com>
  *  @license Unlicense <http://unlicense.org/>
@@ -129,7 +129,7 @@ linereader_free(struct linereader **pp)
 const char *
 linereader_version(void)
 {
-   return "0.2.0-dev0";
+   return "1.0.0-dev0";
 }
 
 const char *
