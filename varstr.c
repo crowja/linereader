@@ -1,10 +1,9 @@
 /**
  *  @file varstr.c
- *  @version 1.3.0-dev0
- *  @date Tue Dec 10 13:43:59 CST 2019
- *  @copyright %COPYRIGHT%
- *  @brief FIXME
- *  @details FIXME
+ *  @version 1.4.0-dev0
+ *  @date Fri Dec 27 20:10:33 CST 2019
+ *  @copyright 2020 John A. Crow <crowja@gmail.com>
+ *  @license Unlicense <http://unlicense.org/>
  */
 
 #include <stdlib.h>
@@ -58,7 +57,7 @@ varstr_free(struct varstr **pp)
 const char *
 varstr_version(void)
 {
-   return "1.3.0-dev0";
+   return "1.4.0-dev0";
 }
 
 int
