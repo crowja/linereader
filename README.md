@@ -1,4 +1,4 @@
-# linereader 1.0.0-dev0.
+# linereader 1.1.0-dev0.
 
 C-scrap for reading a file line by line. If built with
 [Zlib support](https://www.zlib.net/) (-DHAVE\_ZLIB), which is
