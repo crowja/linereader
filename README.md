@@ -1,7 +1,9 @@
 # linereader 1.0.0-dev0.
 
-C-scrap for reading a file line by line. If built with Zlib support
-(-DHAVE\_ZLIB) the input file/stream can be Zlib compressed, e.g. gzipped files.
+C-scrap for reading a file line by line. If built with
+[Zlib support](https://www.zlib.net/) (-DHAVE\_ZLIB), which is
+completely optional, the input file/stream can be Zlib compressed,
+e.g. gzipped files.
 
 ## Here's how you use it
 
