@@ -19,7 +19,6 @@ _chomp(char *str)
    return str;
 }
 
-
 int
 main(void)
 {

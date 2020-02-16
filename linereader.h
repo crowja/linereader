@@ -2,13 +2,13 @@
  *  @file linereader.h
  *  @version 1.1.1-dev0
  *  @see https://github.com/crowja/linereader
- *  @date Sun Jan 26 19:28:47 CST 2020
- *  @copyright 2020 John A. Crow <crowja@gmail.com>
+ *  @date Sun Feb 16, 2020 04:44:08 PM CST
+ *  @copyright 2019-2020 John A. Crow <crowja@gmail.com>
  *  @license Unlicense <http://unlicense.org/>
  */
 
-#ifndef _LINEREADER_H_
-#define _LINEREADER_H_
+#ifndef LINEREADER_H
+#define LINEREADER_H
 
 struct linereader;
 
@@ -38,7 +38,6 @@ const char *linereader_version(void);
 
 /**
  *  @brief Return the next line of text pointed at by the linereader object.
- *  @details FIXME longer description here ...
  *  @param p Pointer to a linereader object created by linereader_new().
  *  @returns String, NULL on error or EOF.
  */

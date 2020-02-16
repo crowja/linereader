@@ -8,6 +8,7 @@ LDFLAGS =
 OTHER_SOURCE = varstr.c
 OTHER_INCLUDE = -I.
 INDENT_FLAGS = 
+STAMPER = stamper
 
 .PHONY: check vcheck scheck indent stamp clean
 
@@ -47,7 +48,7 @@ scheck:
 	  && ( t/a.out < t1.ikv ); \
 	done 
 
-indent: stamp
+indent:
 	@indent $(INDENT_FLAGS) linereader.c
 	@indent $(INDENT_FLAGS) linereader.h
 	@for i in $(TESTS); \
@@ -56,8 +57,8 @@ indent: stamp
 	done 
 
 stamp:
-	@stamper.bash linereader.c
-	@stamper.bash linereader.h
+	@$(STAMPER) linereader.c
+	@$(STAMPER) linereader.h
 
 clean:
 	@/bin/rm -f linereader.o *.o *~ *.BAK *.bak core.* a.out

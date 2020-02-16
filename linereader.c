@@ -2,8 +2,8 @@
  *  @file linereader.c
  *  @version 1.1.1-dev0
  *  @see https://github.com/crowja/linereader
- *  @date Sun Jan 26 19:28:47 CST 2020
- *  @copyright 2020 John A. Crow <crowja@gmail.com>
+ *  @date Sun Feb 16, 2020 04:44:08 PM CST
+ *  @copyright 2019-2020 John A. Crow <crowja@gmail.com>
  *  @license Unlicense <http://unlicense.org/>
  */
 
@@ -28,24 +28,24 @@ typedef FILE *gzFile;
 #endif
 #include "linereader.h"
 
-#ifdef  _IS_NULL
-#undef  _IS_NULL
+#ifdef  IS_NULL
+#undef  IS_NULL
 #endif
-#define _IS_NULL(p)   ((NULL == (p)) ? (1) : (0))
+#define IS_NULL(p)   ((NULL == (p)) ? (1) : (0))
 
-#ifdef  _FREE
-#undef  _FREE
+#ifdef  FREE
+#undef  FREE
 #endif
-#define _FREE(p)      ((NULL == (p)) ? (0) : (free((p)), (p) = NULL))
+#define FREE(p)      ((NULL == (p)) ? (0) : (free((p)), (p) = NULL))
 
-#ifdef  _BUFSIZE
-#undef  _BUFSIZE
+#ifdef  BUFSIZE
+#undef  BUFSIZE
 #endif
-#define _BUFSIZE      1024                       /* _BUFSIZE > 1 */
+#define BUFSIZE      1024                        /* BUFSIZE > 1 */
 
 struct linereader {
    gzFile      in;
-   char        buf[_BUFSIZE];
+   char        buf[BUFSIZE];
    struct varstr *text;
    /**
     *  Flag if test for compressed input has been completed. The first chunk of
@@ -64,14 +64,14 @@ linereader_new(char *fname)
    unsigned char bytes[3];
 
    tp = (struct linereader *) malloc(sizeof(struct linereader));
-   if (_IS_NULL(tp))
+   if (IS_NULL(tp))
       return NULL;
 
-   if (_IS_NULL(fname))
+   if (IS_NULL(fname))
       tp->in = gzdopen(fileno(stdin), "r");
    else
       tp->in = gzopen(fname, "r");
-   if (_IS_NULL(tp->in))
+   if (IS_NULL(tp->in))
       return NULL;
 
 #ifdef  HAVE_ZLIB
@@ -90,7 +90,7 @@ linereader_new(char *fname)
 
    tmp = gzgets(tp->in, (char *) bytes, 3);      /* try reading two bytes */
 
-   if (_IS_NULL(tmp)) {                          /* eof */
+   if (IS_NULL(tmp)) {                           /* eof */
       /* that's okay, pass */
    }
    else if (strlen(tmp) < 2) {                   /* read one byte at most */
@@ -115,15 +115,15 @@ linereader_new(char *fname)
 void
 linereader_free(struct linereader **pp)
 {
-   if (_IS_NULL(*pp))
+   if (IS_NULL(*pp))
       return;
 
    varstr_free(&(*pp)->text);
 
-   if (!_IS_NULL((*pp)->in))
+   if (!IS_NULL((*pp)->in))
       gzclose((*pp)->in);
 
-   _FREE(*pp);
+   FREE(*pp);
    *pp = NULL;
 }
 
@@ -144,7 +144,7 @@ linereader_next(struct linereader *p)
 
    for (;;) {                                    /* loop to consume a single line */
 
-      if (NULL == gzgets(p->in, p->buf, _BUFSIZE)) {
+      if (NULL == gzgets(p->in, p->buf, BUFSIZE)) {
 
          if (strlen(varstr_str(p->text)) == 0)   /* eof and no text accumulated -- done! */
             return NULL;
@@ -161,6 +161,6 @@ linereader_next(struct linereader *p)
    return (const char *) varstr_str(p->text);
 }
 
-#undef  _IS_NULL
-#undef  _FREE
-#undef  _BUFSIZE
+#undef  IS_NULL
+#undef  FREE
+#undef  BUFSIZE
